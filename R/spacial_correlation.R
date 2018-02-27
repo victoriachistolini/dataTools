@@ -1,6 +1,8 @@
 
 #sort, order dataframe 
 create_dataset <- function(day, window, params){
+  cat("day")
+  cat(day)
   
   pres_obs = get_precsence_points_obs(day,
                                       window,
@@ -11,6 +13,11 @@ create_dataset <- function(day, window, params){
   
   pres_obs = pres_obs[order(pres_obs$layer),] 
   pres_obs = na.omit(pres_obs)
+  
+  if (nrow(pres_obs)==0) {
+    return(-1)
+  } 
+  
   pres_obs = aggregate(pres_obs[, 4:16], list(pres_obs$layer), mean)
   
   return(pres_obs)
@@ -71,6 +78,11 @@ create_multi_week_set <-function(days, window, params){
   data=NULL
   for (i in 1:length(days)){
     partial_data = create_dataset(days[i], window, params)
+    
+    if(partial_data==-1) {
+      next
+    }
+    
     
     if(i>1){
       data = rbind(data,partial_data)
