@@ -1,3 +1,4 @@
+# helper methods for formatting a point pattern analysis
 
 # find most commonly occuring year in tick dataset
 find_most_common_year <-function(obs,day){
@@ -28,7 +29,7 @@ format.im <-function(raster_load,year){
 # returns sorted predictors as images
 create_point_process_predictors <- function(day,year, predictor_stack){
   
-  year <-  paste0("A", date, day , sep="",collapse = NULL)
+  year <-  paste0("A", year, day , sep="",collapse = NULL)
   predictors.im = lapply(predictor_stack,function(d) format.im(d,year))
   
   return(predictors.im)
