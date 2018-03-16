@@ -60,9 +60,7 @@ ticks_to_ppp <- function(obs, year, proj=PROJ ){
 # return dataset of tick obs and extracted environmental covariates
 set_up_point_process <- function(SS,day, window,params,year){
   # load/format tick observations
-  obs = trim_prescence_points(tickdata::read_obs(),
-                              SS,
-                              day, window)
+  obs = load_trimmed_tick_obs(SS,day,window)
 
   predictor_stack <- process_predictor_stack(SS, params, window, day)
   prescence_points <- extract_precsence_points(predictor_stack,obs)
