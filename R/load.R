@@ -188,10 +188,26 @@ extract_back_points <- function(pp,obs,nback){
   
 }
 
+
+load_trimmed_tick_obs <- function(ss,day,window){
+  
+  obs <- tickdata::read_deer(stage = 'female') %>%
+    tickdata::add_date_columns() %>%
+    dplyr::select(-year, -month, -day, -species, -stage)
+  
+  obs <- trim_prescence_points(obs, ss, day, window)
+  
+  return(obs)
+  
+}
+
+
 # return auc / num pres points used 
 create_model <- function(day, window,ss,params){
   
-  obs = trim_prescence_points(tickdata::read_obs(), ss, day, window)
+  #obs = trim_prescence_points(tickdata::read_obs(), ss, day, window)
+  
+  obs = load_trimmed_tick_obs(ss,day,window)
   
   # download prescence/background data
   predictor_stack <- process_predictor_stack(ss, params, window, day)
@@ -222,7 +238,9 @@ create_model <- function(day, window,ss,params){
 
 get_precsence_points_obs <- function(day, window,ss,params) {
   
-  obs = trim_prescence_points(tickdata::read_obs(), ss, day, window)
+  #obs = trim_prescence_points(tickdata::read_obs(), ss, day, window)
+  obs = load_trimmed_tick_obs(ss,day,window)
+  
   predictor_stack <- process_predictor_stack(ss, params, window, day)
   prescence_points <- extract_precsence_points(predictor_stack,obs)
   
