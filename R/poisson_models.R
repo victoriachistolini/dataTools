@@ -104,36 +104,36 @@ convert_obs <-function(dataset){
 
 # create a single raster, from stack
 compress_predictor_stack <- function(raster_stack){
-  
+
   single_raster <- mean(raster_stack, na.rm=TRUE)
   raster.im <- as.im(single_raster)
-  
+
   return(raster.im)
-  
+
 }
 
 
 # return imageified predictors stack
-convert_predictors_to_im <- function(){
-  
+convert_predictors_to_im <- function(predictor_stack){
+
   predictors.im = lapply(predictor_stack,function(predictor) compress_predictor_stack(predictor))
   return(predict.im)
-  
+
 }
 
 # return dataset of tick obs and extracted environmental covariates
 create_point_process_dataset <- function(SS,day, window,predictor_stack){
-  
+
   # load/format tick observations
   obs = load_trimmed_tick_obs(SS,day,window)
-  
+
   # get values from covariate images
   prescence_points <- extract_precsence_points(predictor_stack,obs)
-  
-  # create dataset with obs and prescence points 
+
+  # create dataset with obs and prescence points
   dataset <- cbind(obs,prescence_points)
   return(dataset)
-  
+
 }
 
 ######## CONSTANTS ########
