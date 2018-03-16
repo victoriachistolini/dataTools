@@ -101,6 +101,41 @@ convert_obs <-function(dataset){
   ticks.ppp  <- as(ticks.sp, "ppp")
 }
 
+
+# create a single raster, from stack
+compress_predictor_stack <- function(raster_stack){
+  
+  single_raster <- mean(raster_stack, na.rm=TRUE)
+  raster.im <- as.im(single_raster)
+  
+  return(raster.im)
+  
+}
+
+
+# return imageified predictors stack
+convert_predictors_to_im <- function(){
+  
+  predictors.im = lapply(predictor_stack,function(predictor) compress_predictor_stack(predictor))
+  return(predict.im)
+  
+}
+
+# return dataset of tick obs and extracted environmental covariates
+create_point_process_dataset <- function(SS,day, window,predictor_stack){
+  
+  # load/format tick observations
+  obs = load_trimmed_tick_obs(SS,day,window)
+  
+  # get values from covariate images
+  prescence_points <- extract_precsence_points(predictor_stack,obs)
+  
+  # create dataset with obs and prescence points 
+  dataset <- cbind(obs,prescence_points)
+  return(dataset)
+  
+}
+
 ######## CONSTANTS ########
 PROJ <- c(longlat =  "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
           lcc = "+proj=lcc +lat_1=25 +lat_0=25 +lon_0=-95 +k_0=1 +x_0=0 +y_0=0 +a=6367470.21484375 +b=6367470.21484375 +units=km +no_defs")
