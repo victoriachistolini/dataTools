@@ -105,7 +105,7 @@ convert_obs <-function(dataset){
 # create a single raster, from stack
 compress_predictor_stack <- function(raster_stack){
 
-  single_raster <- mean(raster_stack, na.rm=TRUE)
+  single_raster <- mean(raster_stack)
   raster.im <- as.im(single_raster)
 
   return(raster.im)
@@ -117,7 +117,7 @@ compress_predictor_stack <- function(raster_stack){
 convert_predictors_to_im <- function(predictor_stack){
 
   predictors.im = lapply(predictor_stack,function(predictor) compress_predictor_stack(predictor))
-  return(predict.im)
+  return(predictors.im)
 
 }
 
